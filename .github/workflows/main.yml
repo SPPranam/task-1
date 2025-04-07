@@ -18,16 +18,11 @@ jobs:
           node-version: '18'
 
       - name: Change to app directory
-        run: cd node-todo
-
-      - name: Install dependencies
-        run: npm install
-
-      - name: Run tests
-        run: npm test
-
-      - name: Build Docker image
-        run: docker build -t sppranam06/node-todo-app .
+        working-directory: node-todo-cicd
+        run: |
+          npm install
+          npm test
+          docker build -t sppranam06/app.js .
 
       - name: Log in to DockerHub
         uses: docker/login-action@v3
@@ -35,5 +30,5 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      - name: Push image
-        run: docker push sppranam06/node-todo-app
+      - name: Push Docker image
+        run: docker push sppranam06/app.js
